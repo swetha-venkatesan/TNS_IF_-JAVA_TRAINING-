@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  eureka:
+    build: ./eureka-server
+    ports:
+      - "8761:8761"
+  auth:
+    build: ./auth-service
+    ports:
+      - "9001:9001"
+    depends_on:
+      - eureka
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+      - auth
+  event-service:
+    build: ./event-service
+    ports:
+      - "9101:9101"
+    depends_on:
+      - eureka
+  registration-service:
+    build: ./registration-service
+    ports:
+      - "9201:9201"
+    depends_on:
+      - eureka
+  ticket-service:
+    build: ./ticket-service
+    ports:
+      - "9301:9301"
+    depends_on:
+      - eureka
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "9401:9401"
+    depends_on:
+      - eureka

@@ -1,0 +1,30 @@
+
+@startuml
+title EvenTix - High Level Architecture
+
+actor User
+rectangle "API Gateway\n(Spring Cloud Gateway)" as GW
+rectangle "Eureka Server\n(Service Discovery)" as EUREKA
+rectangle "Auth Service\n(JWT issuer)" as AUTH
+rectangle "Event Service" as EVENT
+rectangle "Registration Service" as REG
+rectangle "Ticket Service" as TICKET
+rectangle "Notification Service" as NOTIF
+
+User -> GW : HTTP requests (login, browse events, book)
+GW -> AUTH : /auth/**
+GW -> EVENT : /events/**
+GW -> REG : /registrations/**
+GW -> TICKET : /tickets/**
+GW -> NOTIF : /notifications/**
+
+GW -> EUREKA : Service discovery
+AUTH -> EUREKA
+EVENT -> EUREKA
+REG -> EUREKA
+TICKET -> EUREKA
+NOTIF -> EUREKA
+
+REG -> TICKET : request ticket generation
+TICKET -> NOTIF : send ticket via notification
+@enduml
